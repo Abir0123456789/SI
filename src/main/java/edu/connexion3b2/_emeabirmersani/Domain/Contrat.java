@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @ToString
-public class 5R1Contrat {
+public class Contrat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,13 +26,29 @@ public class 5R1Contrat {
     private BigDecimal montantTotal;
     private boolean valide;
 
-    // Contrat 1 --- 1 Reservation (côté propriétaire : FK reservation_id_reservation)
-    @OneToOne
+    // Contrat 1 --- 1 Reservation : côté PROPRIÉTAIRE (porte la FK reservation_id_reservation)
+    // LAZY forcé : le @OneToOne est EAGER par défaut.
+    @OneToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Reservation reservation;
 
-    // Contrat 1 <>--- * Paiement : composition => cascade ALL + orphanRemoval
-    @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL, orphanRemoval = true)
+    // Étapes 2 à 5 — Contrat 1 <>--- * Paiement : côté INVERSE (mappedBy, aucune colonne créée)
+    // Composition : cascade ALL + orphanRemoval ; LAZY (configuration finale retenue).
+    @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL,
+               orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonIgnore
     @ToString.Exclude
-    private List<Paiement> paiements;
+    @Builder.Default
+    private List<Paiement> paiements = new ArrayList<>();
+
+    // Méthodes utilitaires : maintiennent les deux côtés de l'association synchronisés
+    public void addPaiement(Paiement paiement) {
+        paiements.add(paiement);
+        paiement.setContrat(this);
+    }
+
+    public void removePaiement(Paiement paiement) {
+        paiements.remove(paiement);   // orphanRemoval => DELETE du paiement au flush
+        paiement.setContrat(null);
+    }
 }

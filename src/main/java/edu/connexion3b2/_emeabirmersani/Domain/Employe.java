@@ -22,6 +22,8 @@ public class Employe {
     @Enumerated(EnumType.STRING)
     private RoleEmploye role;
 
-    @ManyToOne
+    // Employe * ---> 1 Agence : côté PROPRIÉTAIRE (FK agence_id_agence), LAZY, aucune cascade
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Agence agence;
 }

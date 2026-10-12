@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,15 +25,17 @@ public class Agence {
     private String adresse;
     private String telephone;
 
-    // Agence 1 --- * Employe (bidirectionnelle)
-    @OneToMany(mappedBy = "agence")
+    // Agence 1 --- * Employe : côté INVERSE, LAZY, aucune cascade
+    @OneToMany(mappedBy = "agence", fetch = FetchType.LAZY)
     @JsonIgnore
     @ToString.Exclude
-    private List<Employe> employes;
+    @Builder.Default
+    private List<Employe> employes = new ArrayList<>();
 
-    // Agence 1 --- * Vehicule (bidirectionnelle)
-    @OneToMany(mappedBy = "agence")
+    // Agence 1 --- * Vehicule : côté INVERSE, LAZY, aucune cascade (un véhicule survit à son agence)
+    @OneToMany(mappedBy = "agence", fetch = FetchType.LAZY)
     @JsonIgnore
     @ToString.Exclude
-    private List<Vehicule> vehicules;
+    @Builder.Default
+    private List<Vehicule> vehicules = new ArrayList<>();
 }

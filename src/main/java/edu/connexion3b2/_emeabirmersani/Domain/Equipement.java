@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -21,9 +22,10 @@ public class Equipement {
 
     private String libelle;
 
-    // Equipement * --- * Vehicule (côté inverse)
-    @ManyToMany(mappedBy = "equipements")
+    // Equipement * --- * Vehicule : côté INVERSE (mappedBy), LAZY, aucune cascade
+    @ManyToMany(mappedBy = "equipements", fetch = FetchType.LAZY)
     @JsonIgnore
     @ToString.Exclude
-    private List<Vehicule> vehicules;
+    @Builder.Default
+    private Set<Vehicule> vehicules = new HashSet<>();
 }

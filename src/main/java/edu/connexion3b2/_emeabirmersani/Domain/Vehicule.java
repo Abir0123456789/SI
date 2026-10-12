@@ -5,7 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -32,20 +35,40 @@ public class Vehicule {
     @Enumerated(EnumType.STRING)
     private StatutVehicule statut;
 
-    // Vehicule * --- 1 Agence
-    @ManyToOne
+    // Vehicule * ---> 1 Agence : côté PROPRIÉTAIRE (FK agence_id_agence), LAZY, aucune cascade
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Agence agence;
 
-    // Vehicule * --- * Equipement (bidirectionnelle, Vehicule = côté propriétaire)
-    @ManyToMany
+    // Vehicule * --- * Equipement : côté PROPRIÉTAIRE (table de jointure vehicule_equipement)
+    // LAZY, aucune cascade (équipements partagés), Set pour éviter les doublons
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "vehicule_equipement")
     @ToString.Exclude
-    private List<Equipement> equipements;
+    @Builder.Default
+    private Set<Equipement> equipements = new HashSet<>();
 
-    // Vehicule 1 --- * Reservation (bidirectionnelle)
-    @OneToMany(mappedBy = "vehicule")
+    // Vehicule 1 --- * Maintenance : côté INVERSE, LAZY, cascade PERSIST
+    @OneToMany(mappedBy = "vehicule", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonIgnore
     @ToString.Exclude
-    private List<Reservation> reservations;
+    @Builder.Default
+    private List<Maintenance> maintenances = new ArrayList<>();
 
-    // Maintenance --> Vehicule : unidirectionnelle, rien de ce côté
+    // Reservation * ---> 1 Vehicule : unidirectionnelle, rien de ce côté
+
+    public void addEquipement(Equipement equipement) {
+        equipements.add(equipement);
+        equipement.getVehicules().add(this);
+    }
+
+    public void removeEquipement(Equipement equipement) {
+        equipements.remove(equipement);
+        equipement.getVehicules().remove(this);
+    }
+
+    public void addMaintenance(Maintenance maintenance) {
+        maintenances.add(maintenance);
+        maintenance.setVehicule(this);
+    }
 }

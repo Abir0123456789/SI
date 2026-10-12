@@ -22,7 +22,8 @@ public class Maintenance {
     private LocalDate dateFin;
     private String description;
 
-    // Maintenance * ---> 1 Vehicule (unidirectionnelle)
-    @ManyToOne
+    // Maintenance * ---> 1 Vehicule : côté PROPRIÉTAIRE (FK vehicule_id_vehicule), LAZY
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Vehicule vehicule;
 }

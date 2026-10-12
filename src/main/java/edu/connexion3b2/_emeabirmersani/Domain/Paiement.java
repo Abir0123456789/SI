@@ -25,7 +25,9 @@ public class Paiement {
     @Enumerated(EnumType.STRING)
     private ModePaiement modePaiement;
 
-    // Paiement * --- 1 Contrat
-    @ManyToOne
+    // Étape 1 — Paiement * ---> 1 Contrat : côté PROPRIÉTAIRE (porte la FK contrat_id_contrat)
+    // LAZY forcé : le @ManyToOne est EAGER par défaut.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Contrat contrat;
 }

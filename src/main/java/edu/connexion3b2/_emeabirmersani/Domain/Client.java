@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,9 +28,16 @@ public class Client {
     private String numPermis;
     private LocalDate dateInscription;
 
-    // Client 1 --- * Reservation (bidirectionnelle)
-    @OneToMany(mappedBy = "client")
+    // Client 1 --- * Reservation : côté INVERSE, LAZY, cascade PERSIST
+    // (enregistrer un nouveau client enregistre ses nouvelles réservations, sans propager la suppression)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonIgnore
     @ToString.Exclude
-    private List<Reservation> reservations;
+    @Builder.Default
+    private List<Reservation> reservations = new ArrayList<>();
+
+    public void addReservation(Reservation reservation) {
+        reservations.add(reservation);
+        reservation.setClient(this);
+    }
 }
