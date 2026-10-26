@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="applicationabirmersani" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <module name="4emeabirmersani" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="edu.connexion3b2._emeabirmersani.Application" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="tn.connexion3b2._emeabirmersani.Application" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
