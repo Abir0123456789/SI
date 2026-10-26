@@ -1,0 +1,2570 @@
+{
+	"info": {
+		"name": "AutoLoc - 4emeabirmersani",
+		"description": "API REST AutoLoc (Spring Boot 4). Lancer d'abord le dossier 0 sur une base vide.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8089"
+		}
+	],
+	"item": [
+		{
+			"name": "0 - Scénario complet (à lancer dans l'ordre sur une base vide)",
+			"item": [
+				{
+					"name": "POST Créer agence Sousse",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/agences/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"agences",
+								"add"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nom\": \"AutoLoc Sousse\",\n  \"ville\": \"Sousse\",\n  \"adresse\": \"Av. Habib Bourguiba\",\n  \"telephone\": \"73000000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "POST Créer agence Tunis",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/agences/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"agences",
+								"add"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nom\": \"AutoLoc Tunis\",\n  \"ville\": \"Tunis\",\n  \"adresse\": \"Rue de Marseille\",\n  \"telephone\": \"71000000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "POST Créer équipement GPS",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/equipements/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"equipements",
+								"add"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"libelle\": \"GPS\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "POST Créer équipement Siège bébé",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/equipements/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"equipements",
+								"add"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"libelle\": \"Siège bébé\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "POST Créer véhicule 1 (agence 1)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/vehicules/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"vehicules",
+								"add"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"immatriculation\": \"123TU4567\",\n  \"marque\": \"Peugeot\",\n  \"modele\": \"208\",\n  \"categorie\": \"CITADINE\",\n  \"tarifJournalier\": 80,\n  \"agence\": {\n    \"idAgence\": 1\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "POST Créer véhicule 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/vehicules/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"vehicules",
+								"add"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"immatriculation\": \"200TU1000\",\n  \"marque\": \"Kia\",\n  \"modele\": \"Sportage\",\n  \"categorie\": \"SUV\",\n  \"tarifJournalier\": 150\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "PUT Affecter véhicule 2 à agence 2",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/vehicules/affecter-agence/2/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"vehicules",
+								"affecter-agence",
+								"2",
+								"2"
+							]
+						}
+					}
+				},
+				{
+					"name": "PUT Ajouter GPS au véhicule 1",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/vehicules/ajouter-equipement/1/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"vehicules",
+								"ajouter-equipement",
+								"1",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "POST Créer employé",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/employes/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employes",
+								"add"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nom\": \"Ben Ali\",\n  \"prenom\": \"Sami\",\n  \"role\": \"AGENT\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "PUT Affecter employé 1 à agence 1",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employes/affecter-agence/1/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employes",
+								"affecter-agence",
+								"1",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "POST Créer client 1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/clients/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"clients",
+								"add"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nom\": \"Trabelsi\",\n  \"prenom\": \"Amine\",\n  \"email\": \"amine@mail.tn\",\n  \"telephone\": \"22000000\",\n  \"numPermis\": \"P-0001\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "POST Créer client 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/clients/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"clients",
+								"add"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nom\": \"Gharbi\",\n  \"prenom\": \"Ines\",\n  \"email\": \"ines@mail.tn\",\n  \"telephone\": \"55000000\",\n  \"numPermis\": \"P-0002\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "GET Véhicules disponibles du 01/12 au 05/12",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/vehicules/disponibles?dateDebut=2026-12-01&dateFin=2026-12-05",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"vehicules",
+								"disponibles"
+							],
+							"query": [
+								{
+									"key": "dateDebut",
+									"value": "2026-12-01"
+								},
+								{
+									"key": "dateFin",
+									"value": "2026-12-05"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "POST Réserver véhicule 1 pour client 1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/reservations/reserver/1/1?dateDebut=2026-12-01&dateFin=2026-12-05",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reservations",
+								"reserver",
+								"1",
+								"1"
+							],
+							"query": [
+								{
+									"key": "dateDebut",
+									"value": "2026-12-01"
+								},
+								{
+									"key": "dateFin",
+									"value": "2026-12-05"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "POST Réservation en conflit (409 attendu)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/reservations/reserver/2/1?dateDebut=2026-12-03&dateFin=2026-12-07",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reservations",
+								"reserver",
+								"2",
+								"1"
+							],
+							"query": [
+								{
+									"key": "dateDebut",
+									"value": "2026-12-03"
+								},
+								{
+									"key": "dateFin",
+									"value": "2026-12-07"
+								}
+							]
+						},
+						"description": "réponse attendue : 409"
+					}
+				},
+				{
+					"name": "PUT Confirmer réservation 1",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/reservations/confirmer/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reservations",
+								"confirmer",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "POST Générer contrat de la réservation 1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/contrats/generer/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"contrats",
+								"generer",
+								"1"
+							]
+						},
+						"description": "montant = tarifJournalier x (dateFin - dateDebut) ; le véhicule passe LOUE"
+					}
+				},
+				{
+					"name": "GET Reste à payer (contrat 1)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/paiements/reste/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"paiements",
+								"reste",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "POST Payer 200 (contrat 1)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/paiements/payer/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"paiements",
+								"payer",
+								"1"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"montant\": 200,\n  \"modePaiement\": \"CARTE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "POST Payer trop (409 attendu)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/paiements/payer/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"paiements",
+								"payer",
+								"1"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"montant\": 500,\n  \"modePaiement\": \"ESPECES\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"description": "réponse attendue : 409"
+					}
+				},
+				{
+					"name": "POST Payer le reste 120 (contrat 1)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/paiements/payer/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"paiements",
+								"payer",
+								"1"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"montant\": 120,\n  \"modePaiement\": \"VIREMENT\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "GET Paiements du contrat 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/paiements/contrat/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"paiements",
+								"contrat",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "POST Planifier maintenance véhicule 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/maintenances/planifier/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"maintenances",
+								"planifier",
+								"2"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dateDebut\": \"2026-12-10\",\n  \"dateFin\": \"2026-12-12\",\n  \"description\": \"Vidange + filtres\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "POST Réserver véhicule 2 pendant maintenance (409 attendu)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/reservations/reserver/2/2?dateDebut=2026-12-11&dateFin=2026-12-13",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reservations",
+								"reserver",
+								"2",
+								"2"
+							],
+							"query": [
+								{
+									"key": "dateDebut",
+									"value": "2026-12-11"
+								},
+								{
+									"key": "dateFin",
+									"value": "2026-12-13"
+								}
+							]
+						},
+						"description": "réponse attendue : 409"
+					}
+				},
+				{
+					"name": "PUT Terminer réservation 1",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/reservations/terminer/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reservations",
+								"terminer",
+								"1"
+							]
+						},
+						"description": "le véhicule redevient DISPONIBLE"
+					}
+				},
+				{
+					"name": "DELETE Supprimer agence 1 (409 : a des véhicules)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/agences/delete/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"agences",
+								"delete",
+								"1"
+							]
+						},
+						"description": "réponse attendue : 409"
+					}
+				},
+				{
+					"name": "GET Véhicule inexistant (404 attendu)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/vehicules/get/999",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"vehicules",
+								"get",
+								"999"
+							]
+						},
+						"description": "réponse attendue : 404"
+					}
+				}
+			]
+		},
+		{
+			"name": "Agences",
+			"item": [
+				{
+					"name": "CRUD",
+					"item": [
+						{
+							"name": "GET Tous (agences)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/agences/all",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"agences",
+										"all"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Par id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/agences/get/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"agences",
+										"get",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "POST Ajouter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/agences/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"agences",
+										"add"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nom\": \"AutoLoc Monastir\",\n  \"ville\": \"Monastir\",\n  \"adresse\": \"Route de la plage\",\n  \"telephone\": \"73111111\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "PUT Modifier (body avec id)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/agences/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"agences",
+										"update"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"idAgence\": 1,\n  \"nom\": \"AutoLoc Sousse Centre\",\n  \"ville\": \"Sousse\",\n  \"adresse\": \"Av. Habib Bourguiba\",\n  \"telephone\": \"73000000\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "DELETE Supprimer",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/agences/delete/99",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"agences",
+										"delete",
+										"99"
+									]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Métier",
+					"item": [
+						{
+							"name": "GET Agences par ville",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/agences/ville/Sousse",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"agences",
+										"ville",
+										"Sousse"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Rechercher agence par nom",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/agences/recherche?nom=tun",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"agences",
+										"recherche"
+									],
+									"query": [
+										{
+											"key": "nom",
+											"value": "tun"
+										}
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Equipements",
+			"item": [
+				{
+					"name": "CRUD",
+					"item": [
+						{
+							"name": "GET Tous (equipements)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/equipements/all",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"equipements",
+										"all"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Par id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/equipements/get/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"equipements",
+										"get",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "POST Ajouter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/equipements/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"equipements",
+										"add"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"libelle\": \"Chaînes neige\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "PUT Modifier (body avec id)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/equipements/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"equipements",
+										"update"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"idEquipement\": 1,\n  \"libelle\": \"GPS Garmin\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "DELETE Supprimer",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/equipements/delete/99",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"equipements",
+										"delete",
+										"99"
+									]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Métier",
+					"item": [
+						{
+							"name": "GET Équipements d'un véhicule",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/equipements/vehicule/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"equipements",
+										"vehicule",
+										"1"
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Vehicules",
+			"item": [
+				{
+					"name": "CRUD",
+					"item": [
+						{
+							"name": "GET Tous (vehicules)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/vehicules/all",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"vehicules",
+										"all"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Par id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/vehicules/get/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"vehicules",
+										"get",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "POST Ajouter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/vehicules/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"vehicules",
+										"add"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"immatriculation\": \"300TU2000\",\n  \"marque\": \"Renault\",\n  \"modele\": \"Clio\",\n  \"categorie\": \"CITADINE\",\n  \"tarifJournalier\": 70,\n  \"agence\": {\n    \"idAgence\": 1\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "PUT Modifier (body avec id)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/vehicules/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"vehicules",
+										"update"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"idVehicule\": 1,\n  \"immatriculation\": \"123TU4567\",\n  \"marque\": \"Peugeot\",\n  \"modele\": \"208\",\n  \"categorie\": \"CITADINE\",\n  \"tarifJournalier\": 85,\n  \"statut\": \"DISPONIBLE\",\n  \"agence\": {\n    \"idAgence\": 1\n  },\n  \"equipements\": [\n    {\n      \"idEquipement\": 1\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "DELETE Supprimer",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/vehicules/delete/99",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"vehicules",
+										"delete",
+										"99"
+									]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Métier",
+					"item": [
+						{
+							"name": "GET Véhicules par statut",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/vehicules/statut/DISPONIBLE",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"vehicules",
+										"statut",
+										"DISPONIBLE"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Véhicules par catégorie",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/vehicules/categorie/SUV",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"vehicules",
+										"categorie",
+										"SUV"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Véhicules d'une agence",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/vehicules/agence/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"vehicules",
+										"agence",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Véhicules par tarif",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/vehicules/tarif?min=50&max=120",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"vehicules",
+										"tarif"
+									],
+									"query": [
+										{
+											"key": "min",
+											"value": "50"
+										},
+										{
+											"key": "max",
+											"value": "120"
+										}
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Véhicules disponibles sur une période",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/vehicules/disponibles?dateDebut=2026-12-01&dateFin=2026-12-05",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"vehicules",
+										"disponibles"
+									],
+									"query": [
+										{
+											"key": "dateDebut",
+											"value": "2026-12-01"
+										},
+										{
+											"key": "dateFin",
+											"value": "2026-12-05"
+										}
+									]
+								}
+							}
+						},
+						{
+							"name": "PUT Affecter véhicule à agence",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/vehicules/affecter-agence/1/2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"vehicules",
+										"affecter-agence",
+										"1",
+										"2"
+									]
+								}
+							}
+						},
+						{
+							"name": "PUT Ajouter équipement",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/vehicules/ajouter-equipement/1/2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"vehicules",
+										"ajouter-equipement",
+										"1",
+										"2"
+									]
+								}
+							}
+						},
+						{
+							"name": "PUT Retirer équipement",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/vehicules/retirer-equipement/1/2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"vehicules",
+										"retirer-equipement",
+										"1",
+										"2"
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Employes",
+			"item": [
+				{
+					"name": "CRUD",
+					"item": [
+						{
+							"name": "GET Tous (employes)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/employes/all",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"employes",
+										"all"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Par id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/employes/get/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"employes",
+										"get",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "POST Ajouter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/employes/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"employes",
+										"add"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nom\": \"Jaziri\",\n  \"prenom\": \"Mouna\",\n  \"role\": \"MANAGER\",\n  \"agence\": {\n    \"idAgence\": 1\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "PUT Modifier (body avec id)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/employes/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"employes",
+										"update"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"idEmploye\": 1,\n  \"nom\": \"Ben Ali\",\n  \"prenom\": \"Sami\",\n  \"role\": \"MANAGER\",\n  \"agence\": {\n    \"idAgence\": 1\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "DELETE Supprimer",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/employes/delete/99",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"employes",
+										"delete",
+										"99"
+									]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Métier",
+					"item": [
+						{
+							"name": "PUT Affecter employé à agence",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/employes/affecter-agence/1/2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"employes",
+										"affecter-agence",
+										"1",
+										"2"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Employés d'une agence",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/employes/agence/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"employes",
+										"agence",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Employés par rôle",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/employes/role/AGENT",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"employes",
+										"role",
+										"AGENT"
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Clients",
+			"item": [
+				{
+					"name": "CRUD",
+					"item": [
+						{
+							"name": "GET Tous (clients)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/clients/all",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"clients",
+										"all"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Par id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/clients/get/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"clients",
+										"get",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "POST Ajouter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/clients/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"clients",
+										"add"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nom\": \"Mansour\",\n  \"prenom\": \"Yassine\",\n  \"email\": \"yassine@mail.tn\",\n  \"telephone\": \"98000000\",\n  \"numPermis\": \"P-0003\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "PUT Modifier (body avec id)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/clients/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"clients",
+										"update"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"idClient\": 1,\n  \"nom\": \"Trabelsi\",\n  \"prenom\": \"Amine\",\n  \"email\": \"amine@mail.tn\",\n  \"telephone\": \"22111111\",\n  \"numPermis\": \"P-0001\",\n  \"dateInscription\": \"2026-10-26\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "DELETE Supprimer",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/clients/delete/99",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"clients",
+										"delete",
+										"99"
+									]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Métier",
+					"item": [
+						{
+							"name": "GET Client par email",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/clients/email?email=amine@mail.tn",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"clients",
+										"email"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "amine@mail.tn"
+										}
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Rechercher client (nom ou prénom)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/clients/recherche?motCle=ami",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"clients",
+										"recherche"
+									],
+									"query": [
+										{
+											"key": "motCle",
+											"value": "ami"
+										}
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Reservations",
+			"item": [
+				{
+					"name": "CRUD",
+					"item": [
+						{
+							"name": "GET Tous (reservations)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/reservations/all",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reservations",
+										"all"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Par id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/reservations/get/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reservations",
+										"get",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "POST Ajouter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reservations/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reservations",
+										"add"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"dateDebut\": \"2026-12-20\",\n  \"dateFin\": \"2026-12-22\",\n  \"statut\": \"EN_ATTENTE\",\n  \"vehicule\": {\n    \"idVehicule\": 2\n  },\n  \"client\": {\n    \"idClient\": 2\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "PUT Modifier (body avec id)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reservations/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reservations",
+										"update"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"idReservation\": 1,\n  \"dateDebut\": \"2026-12-01\",\n  \"dateFin\": \"2026-12-06\",\n  \"statut\": \"CONFIRMEE\",\n  \"vehicule\": {\n    \"idVehicule\": 1\n  },\n  \"client\": {\n    \"idClient\": 1\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "DELETE Supprimer",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/reservations/delete/99",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reservations",
+										"delete",
+										"99"
+									]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Métier",
+					"item": [
+						{
+							"name": "POST Réserver (contrôles métier)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/reservations/reserver/1/1?dateDebut=2026-12-01&dateFin=2026-12-05",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reservations",
+										"reserver",
+										"1",
+										"1"
+									],
+									"query": [
+										{
+											"key": "dateDebut",
+											"value": "2026-12-01"
+										},
+										{
+											"key": "dateFin",
+											"value": "2026-12-05"
+										}
+									]
+								}
+							}
+						},
+						{
+							"name": "PUT Confirmer",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/reservations/confirmer/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reservations",
+										"confirmer",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "PUT Annuler",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/reservations/annuler/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reservations",
+										"annuler",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "PUT Terminer",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/reservations/terminer/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reservations",
+										"terminer",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Réservations d'un client",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/reservations/client/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reservations",
+										"client",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Réservations d'un véhicule",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/reservations/vehicule/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reservations",
+										"vehicule",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Réservations par statut",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/reservations/statut/CONFIRMEE",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reservations",
+										"statut",
+										"CONFIRMEE"
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Contrats",
+			"item": [
+				{
+					"name": "CRUD",
+					"item": [
+						{
+							"name": "GET Tous (contrats)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/contrats/all",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contrats",
+										"all"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Par id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/contrats/get/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contrats",
+										"get",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "POST Ajouter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/contrats/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contrats",
+										"add"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"dateSignature\": \"2026-12-01\",\n  \"montantTotal\": 300,\n  \"valide\": true,\n  \"reservation\": {\n    \"idReservation\": 1\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "PUT Modifier (body avec id)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/contrats/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contrats",
+										"update"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"idContrat\": 1,\n  \"dateSignature\": \"2026-12-01\",\n  \"montantTotal\": 320,\n  \"valide\": true,\n  \"reservation\": {\n    \"idReservation\": 1\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "DELETE Supprimer",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/contrats/delete/99",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contrats",
+										"delete",
+										"99"
+									]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Métier",
+					"item": [
+						{
+							"name": "POST Générer contrat depuis réservation",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/contrats/generer/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contrats",
+										"generer",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Contrat d'une réservation",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/contrats/reservation/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contrats",
+										"reservation",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Contrats valides / non valides",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/contrats/valide/true",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contrats",
+										"valide",
+										"true"
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Paiements",
+			"item": [
+				{
+					"name": "CRUD",
+					"item": [
+						{
+							"name": "GET Tous (paiements)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/paiements/all",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"paiements",
+										"all"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Par id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/paiements/get/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"paiements",
+										"get",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "POST Ajouter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/paiements/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"paiements",
+										"add"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"montant\": 50,\n  \"datePaiement\": \"2026-12-01\",\n  \"modePaiement\": \"ESPECES\",\n  \"contrat\": {\n    \"idContrat\": 1\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "PUT Modifier (body avec id)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/paiements/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"paiements",
+										"update"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"idPaiement\": 1,\n  \"montant\": 210,\n  \"datePaiement\": \"2026-12-01\",\n  \"modePaiement\": \"CARTE\",\n  \"contrat\": {\n    \"idContrat\": 1\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "DELETE Supprimer",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/paiements/delete/99",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"paiements",
+										"delete",
+										"99"
+									]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Métier",
+					"item": [
+						{
+							"name": "POST Payer un contrat (contrôle du reste)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/paiements/payer/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"paiements",
+										"payer",
+										"1"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"montant\": 100,\n  \"modePaiement\": \"CARTE\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "GET Paiements d'un contrat",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/paiements/contrat/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"paiements",
+										"contrat",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Reste à payer",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/paiements/reste/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"paiements",
+										"reste",
+										"1"
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Maintenances",
+			"item": [
+				{
+					"name": "CRUD",
+					"item": [
+						{
+							"name": "GET Tous (maintenances)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/maintenances/all",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"maintenances",
+										"all"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Par id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/maintenances/get/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"maintenances",
+										"get",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "POST Ajouter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/maintenances/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"maintenances",
+										"add"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"dateDebut\": \"2027-01-05\",\n  \"dateFin\": \"2027-01-06\",\n  \"description\": \"Contrôle technique\",\n  \"vehicule\": {\n    \"idVehicule\": 1\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "PUT Modifier (body avec id)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/maintenances/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"maintenances",
+										"update"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"idMaintenance\": 1,\n  \"dateDebut\": \"2026-12-10\",\n  \"dateFin\": \"2026-12-13\",\n  \"description\": \"Vidange + filtres + pneus\",\n  \"vehicule\": {\n    \"idVehicule\": 2\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "DELETE Supprimer",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/maintenances/delete/99",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"maintenances",
+										"delete",
+										"99"
+									]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Métier",
+					"item": [
+						{
+							"name": "POST Planifier maintenance",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/maintenances/planifier/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"maintenances",
+										"planifier",
+										"1"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"dateDebut\": \"2027-01-10\",\n  \"dateFin\": \"2027-01-11\",\n  \"description\": \"Pneus\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "PUT Terminer maintenance",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/maintenances/terminer/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"maintenances",
+										"terminer",
+										"1"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Maintenances d'un véhicule",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/maintenances/vehicule/2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"maintenances",
+										"vehicule",
+										"2"
+									]
+								}
+							}
+						},
+						{
+							"name": "GET Maintenances en cours",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/maintenances/en-cours",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"maintenances",
+										"en-cours"
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}
