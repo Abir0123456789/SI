@@ -1,6 +1,5 @@
 package tn.connexion3b2._emeabirmersani.Domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,44 +12,34 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@ToString
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // proxy LAZY : champs techniques Hibernate
+@AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Contrat {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idContrat;
-
     private LocalDate dateSignature;
     private BigDecimal montantTotal;
     private boolean valide;
 
-    // Contrat 1 --- 1 Reservation : côté PROPRIÉTAIRE (porte la FK reservation_id_reservation)
-    // LAZY forcé : le @OneToOne est EAGER par défaut.
+    // Contrat 1 --- 1 Reservation (cote proprietaire : FK reservation_id_reservation)
     @OneToOne(fetch = FetchType.LAZY)
-    @ToString.Exclude
     private Reservation reservation;
 
-    // Étapes 2 à 5 — Contrat 1 <>--- * Paiement : côté INVERSE (mappedBy, aucune colonne créée)
-    // Composition : cascade ALL + orphanRemoval ; LAZY (configuration finale retenue).
+    // Contrat <>--- * Paiement (composition, cote inverse) : ALL + orphanRemoval
     @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL,
                orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonIgnore
-    @ToString.Exclude
-    @Builder.Default
     private List<Paiement> paiements = new ArrayList<>();
 
-    // Méthodes utilitaires : maintiennent les deux côtés de l'association synchronisés
+    // Synchronise les deux cotes de l'association
     public void addPaiement(Paiement paiement) {
         paiements.add(paiement);
         paiement.setContrat(this);
     }
 
     public void removePaiement(Paiement paiement) {
-        paiements.remove(paiement);   // orphanRemoval => DELETE du paiement au flush
+        paiements.remove(paiement);
         paiement.setContrat(null);
     }
 }

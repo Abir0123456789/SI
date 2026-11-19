@@ -1,15 +1,11 @@
 package tn.connexion3b2._emeabirmersani.Service.Impls;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import tn.connexion3b2._emeabirmersani.Domain.Agence;
 import tn.connexion3b2._emeabirmersani.Domain.Employe;
-import tn.connexion3b2._emeabirmersani.Domain.RoleEmploye;
-import tn.connexion3b2._emeabirmersani.Repository.IAgenceRepository;
 import tn.connexion3b2._emeabirmersani.Repository.IEmployeRepository;
 import tn.connexion3b2._emeabirmersani.Service.IEmployeService;
+import tn.connexion3b2._emeabirmersani.exception.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -18,33 +14,20 @@ import java.util.List;
 public class EmployeServiceImpl implements IEmployeService {
 
     private final IEmployeRepository employeRepository;
-    private final IAgenceRepository agenceRepository;
 
     @Override
-    public Employe getById(long id) {
+    public Employe create(Employe employe) {
+        if (employe.getIdEmploye() != null) {
+            throw new IllegalArgumentException("Un nouvel employé ne doit pas avoir d'identifiant");
+        }
+        verifier(employe);
+        return employeRepository.save(employe);
+    }
+
+    @Override
+    public Employe findById(Long id) {
         return employeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("employe not found"));
-    }
-
-    @Override
-    public Employe add(Employe employe) {
-        return employeRepository.save(employe);
-    }
-
-    @Override
-    public Employe update(Employe employe) {
-        if (employe.getIdEmploye() == null || !employeRepository.existsById(employe.getIdEmploye())) {
-            throw new EntityNotFoundException("employe not found");
-        }
-        return employeRepository.save(employe);
-    }
-
-    @Override
-    public void deleteById(long id) {
-        if (!employeRepository.existsById(id)) {
-            throw new EntityNotFoundException("employe not found");
-        }
-        employeRepository.deleteById(id);
+                .orElseThrow(() -> new ResourceNotFoundException("Employe", id));
     }
 
     @Override
@@ -53,22 +36,38 @@ public class EmployeServiceImpl implements IEmployeService {
     }
 
     @Override
-    @Transactional
-    public Employe affecterAgence(long idEmploye, long idAgence) {
-        Employe employe = getById(idEmploye);
-        Agence agence = agenceRepository.findById(idAgence)
-                .orElseThrow(() -> new EntityNotFoundException("agence not found"));
-        employe.setAgence(agence); // côté propriétaire : la FK est écrite au commit
-        return employe;
+    public Employe update(Long id, Employe employe) {
+        Employe existant = findById(id);
+        verifier(employe);
+        // recopie des attributs modifiables, sans toucher à l'identifiant ni aux associations
+        existant.setNom(employe.getNom());
+        existant.setPrenom(employe.getPrenom());
+        existant.setRole(employe.getRole());
+        return employeRepository.save(existant);
     }
 
     @Override
-    public List<Employe> findByAgence(long idAgence) {
-        return employeRepository.findByAgenceIdAgence(idAgence);
+    public void deleteById(Long id) {
+        if (!employeRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Employe", id);
+        }
+        employeRepository.deleteById(id);
     }
 
-    @Override
-    public List<Employe> findByRole(RoleEmploye role) {
-        return employeRepository.findByRole(role);
+    // Règle de gestion : appelée à la création et à la modification
+    private void verifier(Employe employe) {
+        if (estVide(employe.getNom())) {
+            throw new IllegalArgumentException("Le nom de l'employé est obligatoire");
+        }
+        if (estVide(employe.getPrenom())) {
+            throw new IllegalArgumentException("Le prénom de l'employé est obligatoire");
+        }
+        if (employe.getRole() == null) {
+            throw new IllegalArgumentException("Le rôle de l'employé est obligatoire");
+        }
+    }
+
+    private static boolean estVide(String valeur) {
+        return valeur == null || valeur.isBlank();
     }
 }

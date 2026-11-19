@@ -1,19 +1,18 @@
 package tn.connexion3b2._emeabirmersani.Service;
 
 import tn.connexion3b2._emeabirmersani.Domain.Employe;
-import tn.connexion3b2._emeabirmersani.Domain.RoleEmploye;
 
 import java.util.List;
 
 public interface IEmployeService {
-    Employe getById(long id);
-    Employe add(Employe employe);
-    Employe update(Employe employe);
-    void deleteById(long id);
+
+    Employe create(Employe employe);
+
+    Employe findById(Long id);
+
     List<Employe> findAll();
 
-    // métier
-    Employe affecterAgence(long idEmploye, long idAgence);
-    List<Employe> findByAgence(long idAgence);
-    List<Employe> findByRole(RoleEmploye role);
+    Employe update(Long id, Employe employe);
+
+    void deleteById(Long id);
 }

@@ -1,60 +1,48 @@
 package tn.connexion3b2._emeabirmersani.WebController;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import tn.connexion3b2._emeabirmersani.Domain.Employe;
-import tn.connexion3b2._emeabirmersani.Domain.RoleEmploye;
 import tn.connexion3b2._emeabirmersani.Service.IEmployeService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/employes")
+@RequestMapping("employes")
 @RequiredArgsConstructor
 public class EmployeRestController {
 
     private final IEmployeService employeService;
 
-    @GetMapping("all")
-    public List<Employe> getAll() {
+    @PostMapping("add")
+    public Employe create(@RequestBody Employe employe) {
+        return employeService.create(employe);
+    }
+
+    @GetMapping
+    public List<Employe> findAll() {
         return employeService.findAll();
     }
 
-    @GetMapping("get/{id}")
-    public Employe getById(@PathVariable("id") long id) {
-        return employeService.getById(id);
+    @GetMapping("{id}")
+    public Employe findById(@PathVariable("id") Long id) {
+        return employeService.findById(id);
     }
 
-    @PostMapping("add")
-    public Employe create(@RequestBody Employe employe) {
-        return employeService.add(employe);
+    @PutMapping("{id}")
+    public Employe update(@PathVariable("id") Long id, @RequestBody Employe employe) {
+        return employeService.update(id, employe);
     }
 
-    @PutMapping("update")
-    public Employe update(@RequestBody Employe employe) {
-        return employeService.update(employe);
-    }
-
-    @DeleteMapping("delete/{id}")
-    public void delete(@PathVariable("id") long id) {
+    @DeleteMapping("{id}")
+    public void deleteById(@PathVariable("id") Long id) {
         employeService.deleteById(id);
-    }
-
-    // ---------- métier ----------
-
-    @PutMapping("affecter-agence/{idEmploye}/{idAgence}")
-    public Employe affecterAgence(@PathVariable("idEmploye") long idEmploye,
-                                  @PathVariable("idAgence") long idAgence) {
-        return employeService.affecterAgence(idEmploye, idAgence);
-    }
-
-    @GetMapping("agence/{idAgence}")
-    public List<Employe> getByAgence(@PathVariable("idAgence") long idAgence) {
-        return employeService.findByAgence(idAgence);
-    }
-
-    @GetMapping("role/{role}")
-    public List<Employe> getByRole(@PathVariable("role") RoleEmploye role) {
-        return employeService.findByRole(role);
     }
 }

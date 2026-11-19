@@ -1,13 +1,11 @@
 package tn.connexion3b2._emeabirmersani.Service.Impls;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.connexion3b2._emeabirmersani.Domain.Agence;
 import tn.connexion3b2._emeabirmersani.Repository.IAgenceRepository;
-import tn.connexion3b2._emeabirmersani.Repository.IEmployeRepository;
-import tn.connexion3b2._emeabirmersani.Repository.IVehiculeRepository;
 import tn.connexion3b2._emeabirmersani.Service.IAgenceService;
+import tn.connexion3b2._emeabirmersani.exception.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -16,41 +14,20 @@ import java.util.List;
 public class AgenceServiceImpl implements IAgenceService {
 
     private final IAgenceRepository agenceRepository;
-    private final IVehiculeRepository vehiculeRepository;
-    private final IEmployeRepository employeRepository;
 
     @Override
-    public Agence getById(long id) {
+    public Agence create(Agence agence) {
+        if (agence.getIdAgence() != null) {
+            throw new IllegalArgumentException("Une nouvelle agence ne doit pas avoir d'identifiant");
+        }
+        verifier(agence);
+        return agenceRepository.save(agence);
+    }
+
+    @Override
+    public Agence findById(Long id) {
         return agenceRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("agence not found"));
-    }
-
-    @Override
-    public Agence add(Agence agence) {
-        return agenceRepository.save(agence);
-    }
-
-    @Override
-    public Agence update(Agence agence) {
-        if (agence.getIdAgence() == null || !agenceRepository.existsById(agence.getIdAgence())) {
-            throw new EntityNotFoundException("agence not found");
-        }
-        return agenceRepository.save(agence);
-    }
-
-    @Override
-    public void deleteById(long id) {
-        if (!agenceRepository.existsById(id)) {
-            throw new EntityNotFoundException("agence not found");
-        }
-        // aucune cascade Agence -> Vehicule / Employe : on refuse plutôt que laisser la FK échouer
-        if (vehiculeRepository.existsByAgenceIdAgence(id)) {
-            throw new IllegalStateException("suppression impossible : l'agence possède encore des véhicules");
-        }
-        if (employeRepository.existsByAgenceIdAgence(id)) {
-            throw new IllegalStateException("suppression impossible : l'agence possède encore des employés");
-        }
-        agenceRepository.deleteById(id);
+                .orElseThrow(() -> new ResourceNotFoundException("Agence", id));
     }
 
     @Override
@@ -59,12 +36,33 @@ public class AgenceServiceImpl implements IAgenceService {
     }
 
     @Override
-    public List<Agence> findByVille(String ville) {
-        return agenceRepository.findByVilleIgnoreCase(ville);
+    public Agence update(Long id, Agence agence) {
+        Agence existant = findById(id);
+        verifier(agence);
+        // recopie des attributs modifiables, sans toucher à l'identifiant ni aux associations
+        existant.setNom(agence.getNom());
+        existant.setVille(agence.getVille());
+        existant.setAdresse(agence.getAdresse());
+        existant.setTelephone(agence.getTelephone());
+        return agenceRepository.save(existant);
     }
 
     @Override
-    public List<Agence> rechercherParNom(String nom) {
-        return agenceRepository.findByNomContainingIgnoreCase(nom);
+    public void deleteById(Long id) {
+        if (!agenceRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Agence", id);
+        }
+        agenceRepository.deleteById(id);
+    }
+
+    // Règle de gestion : appelée à la création et à la modification
+    private void verifier(Agence agence) {
+        if (estVide(agence.getNom())) {
+            throw new IllegalArgumentException("Le nom de l'agence est obligatoire");
+        }
+    }
+
+    private static boolean estVide(String valeur) {
+        return valeur == null || valeur.isBlank();
     }
 }

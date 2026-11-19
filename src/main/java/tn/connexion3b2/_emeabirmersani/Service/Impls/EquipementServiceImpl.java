@@ -1,13 +1,11 @@
 package tn.connexion3b2._emeabirmersani.Service.Impls;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import tn.connexion3b2._emeabirmersani.Domain.Equipement;
-import tn.connexion3b2._emeabirmersani.Domain.Vehicule;
 import tn.connexion3b2._emeabirmersani.Repository.IEquipementRepository;
 import tn.connexion3b2._emeabirmersani.Service.IEquipementService;
+import tn.connexion3b2._emeabirmersani.exception.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -18,34 +16,18 @@ public class EquipementServiceImpl implements IEquipementService {
     private final IEquipementRepository equipementRepository;
 
     @Override
-    public Equipement getById(long id) {
+    public Equipement create(Equipement equipement) {
+        if (equipement.getIdEquipement() != null) {
+            throw new IllegalArgumentException("Un nouvel équipement ne doit pas avoir d'identifiant");
+        }
+        verifier(equipement);
+        return equipementRepository.save(equipement);
+    }
+
+    @Override
+    public Equipement findById(Long id) {
         return equipementRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("equipement not found"));
-    }
-
-    @Override
-    public Equipement add(Equipement equipement) {
-        return equipementRepository.save(equipement);
-    }
-
-    @Override
-    public Equipement update(Equipement equipement) {
-        if (equipement.getIdEquipement() == null || !equipementRepository.existsById(equipement.getIdEquipement())) {
-            throw new EntityNotFoundException("equipement not found");
-        }
-        return equipementRepository.save(equipement);
-    }
-
-    @Override
-    @Transactional
-    public void deleteById(long id) {
-        Equipement equipement = getById(id);
-        // Equipement est le côté inverse du @ManyToMany : on retire d'abord l'équipement
-        // de chaque véhicule (côté propriétaire) pour vider la table vehicule_equipement
-        for (Vehicule vehicule : equipement.getVehicules()) {
-            vehicule.getEquipements().remove(equipement);
-        }
-        equipementRepository.delete(equipement);
+                .orElseThrow(() -> new ResourceNotFoundException("Equipement", id));
     }
 
     @Override
@@ -54,7 +36,30 @@ public class EquipementServiceImpl implements IEquipementService {
     }
 
     @Override
-    public List<Equipement> findByVehicule(long idVehicule) {
-        return equipementRepository.findByVehiculesIdVehicule(idVehicule);
+    public Equipement update(Long id, Equipement equipement) {
+        Equipement existant = findById(id);
+        verifier(equipement);
+        // recopie des attributs modifiables, sans toucher à l'identifiant ni aux associations
+        existant.setLibelle(equipement.getLibelle());
+        return equipementRepository.save(existant);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        if (!equipementRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Equipement", id);
+        }
+        equipementRepository.deleteById(id);
+    }
+
+    // Règle de gestion : appelée à la création et à la modification
+    private void verifier(Equipement equipement) {
+        if (estVide(equipement.getLibelle())) {
+            throw new IllegalArgumentException("Le libellé de l'équipement est obligatoire");
+        }
+    }
+
+    private static boolean estVide(String valeur) {
+        return valeur == null || valeur.isBlank();
     }
 }

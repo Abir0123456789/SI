@@ -1,14 +1,12 @@
 package tn.connexion3b2._emeabirmersani.Service.Impls;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.connexion3b2._emeabirmersani.Domain.Client;
 import tn.connexion3b2._emeabirmersani.Repository.IClientRepository;
-import tn.connexion3b2._emeabirmersani.Repository.IReservationRepository;
 import tn.connexion3b2._emeabirmersani.Service.IClientService;
+import tn.connexion3b2._emeabirmersani.exception.ResourceNotFoundException;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -16,46 +14,20 @@ import java.util.List;
 public class ClientServiceImpl implements IClientService {
 
     private final IClientRepository clientRepository;
-    private final IReservationRepository reservationRepository;
 
     @Override
-    public Client getById(long id) {
+    public Client create(Client client) {
+        if (client.getIdClient() != null) {
+            throw new IllegalArgumentException("Un nouveau client ne doit pas avoir d'identifiant");
+        }
+        verifier(client);
+        return clientRepository.save(client);
+    }
+
+    @Override
+    public Client findById(Long id) {
         return clientRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("client not found"));
-    }
-
-    @Override
-    public Client add(Client client) {
-        if (client.getEmail() != null && clientRepository.existsByEmail(client.getEmail())) {
-            throw new IllegalStateException("email déjà utilisé : " + client.getEmail());
-        }
-        if (client.getNumPermis() != null && clientRepository.existsByNumPermis(client.getNumPermis())) {
-            throw new IllegalStateException("numéro de permis déjà utilisé : " + client.getNumPermis());
-        }
-        if (client.getDateInscription() == null) {
-            client.setDateInscription(LocalDate.now());
-        }
-        return clientRepository.save(client);
-    }
-
-    @Override
-    public Client update(Client client) {
-        if (client.getIdClient() == null || !clientRepository.existsById(client.getIdClient())) {
-            throw new EntityNotFoundException("client not found");
-        }
-        return clientRepository.save(client);
-    }
-
-    @Override
-    public void deleteById(long id) {
-        if (!clientRepository.existsById(id)) {
-            throw new EntityNotFoundException("client not found");
-        }
-        // pas de cascade REMOVE : l'historique des réservations est conservé
-        if (reservationRepository.existsByClientIdClient(id)) {
-            throw new IllegalStateException("suppression impossible : le client a des réservations");
-        }
-        clientRepository.deleteById(id);
+                .orElseThrow(() -> new ResourceNotFoundException("Client", id));
     }
 
     @Override
@@ -64,13 +36,38 @@ public class ClientServiceImpl implements IClientService {
     }
 
     @Override
-    public Client findByEmail(String email) {
-        return clientRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("client not found"));
+    public Client update(Long id, Client client) {
+        Client existant = findById(id);
+        verifier(client);
+        // recopie des attributs modifiables, sans toucher à l'identifiant ni aux associations
+        existant.setNom(client.getNom());
+        existant.setPrenom(client.getPrenom());
+        existant.setEmail(client.getEmail());
+        existant.setTelephone(client.getTelephone());
+        existant.setNumPermis(client.getNumPermis());
+        existant.setDateInscription(client.getDateInscription());
+        return clientRepository.save(existant);
     }
 
     @Override
-    public List<Client> rechercher(String motCle) {
-        return clientRepository.findByNomContainingIgnoreCaseOrPrenomContainingIgnoreCase(motCle, motCle);
+    public void deleteById(Long id) {
+        if (!clientRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Client", id);
+        }
+        clientRepository.deleteById(id);
+    }
+
+    // Règle de gestion : appelée à la création et à la modification
+    private void verifier(Client client) {
+        if (estVide(client.getNom())) {
+            throw new IllegalArgumentException("Le nom du client est obligatoire");
+        }
+        if (estVide(client.getEmail())) {
+            throw new IllegalArgumentException("L'e-mail du client est obligatoire");
+        }
+    }
+
+    private static boolean estVide(String valeur) {
+        return valeur == null || valeur.isBlank();
     }
 }

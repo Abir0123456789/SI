@@ -5,13 +5,14 @@ import tn.connexion3b2._emeabirmersani.Domain.Client;
 import java.util.List;
 
 public interface IClientService {
-    Client getById(long id);
-    Client add(Client client);
-    Client update(Client client);
-    void deleteById(long id);
+
+    Client create(Client client);
+
+    Client findById(Long id);
+
     List<Client> findAll();
 
-    // métier
-    Client findByEmail(String email);
-    List<Client> rechercher(String motCle);
+    Client update(Long id, Client client);
+
+    void deleteById(Long id);
 }

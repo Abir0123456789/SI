@@ -5,15 +5,14 @@ import tn.connexion3b2._emeabirmersani.Domain.Maintenance;
 import java.util.List;
 
 public interface IMaintenanceService {
-    Maintenance getById(long id);
-    Maintenance add(Maintenance maintenance);
-    Maintenance update(Maintenance maintenance);
-    void deleteById(long id);
+
+    Maintenance create(Maintenance maintenance);
+
+    Maintenance findById(Long id);
+
     List<Maintenance> findAll();
 
-    // métier
-    Maintenance planifier(long idVehicule, Maintenance maintenance);
-    Maintenance terminer(long idMaintenance);
-    List<Maintenance> findByVehicule(long idVehicule);
-    List<Maintenance> findEnCours();
+    Maintenance update(Long id, Maintenance maintenance);
+
+    void deleteById(Long id);
 }

@@ -5,12 +5,14 @@ import tn.connexion3b2._emeabirmersani.Domain.Equipement;
 import java.util.List;
 
 public interface IEquipementService {
-    Equipement getById(long id);
-    Equipement add(Equipement equipement);
-    Equipement update(Equipement equipement);
-    void deleteById(long id);
+
+    Equipement create(Equipement equipement);
+
+    Equipement findById(Long id);
+
     List<Equipement> findAll();
 
-    // métier
-    List<Equipement> findByVehicule(long idVehicule);
+    Equipement update(Long id, Equipement equipement);
+
+    void deleteById(Long id);
 }

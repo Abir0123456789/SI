@@ -1,85 +1,48 @@
 package tn.connexion3b2._emeabirmersani.WebController;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import tn.connexion3b2._emeabirmersani.Domain.Reservation;
-import tn.connexion3b2._emeabirmersani.Domain.StatutReservation;
 import tn.connexion3b2._emeabirmersani.Service.IReservationService;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/reservations")
+@RequestMapping("reservations")
 @RequiredArgsConstructor
 public class ReservationRestController {
 
     private final IReservationService reservationService;
 
-    @GetMapping("all")
-    public List<Reservation> getAll() {
+    @PostMapping("add")
+    public Reservation create(@RequestBody Reservation reservation) {
+        return reservationService.create(reservation);
+    }
+
+    @GetMapping
+    public List<Reservation> findAll() {
         return reservationService.findAll();
     }
 
-    @GetMapping("get/{id}")
-    public Reservation getById(@PathVariable("id") long id) {
-        return reservationService.getById(id);
+    @GetMapping("{id}")
+    public Reservation findById(@PathVariable("id") Long id) {
+        return reservationService.findById(id);
     }
 
-    @PostMapping("add")
-    public Reservation create(@RequestBody Reservation reservation) {
-        return reservationService.add(reservation);
+    @PutMapping("{id}")
+    public Reservation update(@PathVariable("id") Long id, @RequestBody Reservation reservation) {
+        return reservationService.update(id, reservation);
     }
 
-    @PutMapping("update")
-    public Reservation update(@RequestBody Reservation reservation) {
-        return reservationService.update(reservation);
-    }
-
-    @DeleteMapping("delete/{id}")
-    public void delete(@PathVariable("id") long id) {
+    @DeleteMapping("{id}")
+    public void deleteById(@PathVariable("id") Long id) {
         reservationService.deleteById(id);
-    }
-
-    // ---------- métier ----------
-
-    // ex : POST /reservations/reserver/1/2?dateDebut=2026-11-01&dateFin=2026-11-05
-    @PostMapping("reserver/{idClient}/{idVehicule}")
-    public Reservation reserver(@PathVariable("idClient") long idClient,
-                                @PathVariable("idVehicule") long idVehicule,
-                                @RequestParam("dateDebut") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateDebut,
-                                @RequestParam("dateFin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFin) {
-        return reservationService.reserver(idClient, idVehicule, dateDebut, dateFin);
-    }
-
-    @PutMapping("confirmer/{id}")
-    public Reservation confirmer(@PathVariable("id") long id) {
-        return reservationService.confirmer(id);
-    }
-
-    @PutMapping("annuler/{id}")
-    public Reservation annuler(@PathVariable("id") long id) {
-        return reservationService.annuler(id);
-    }
-
-    @PutMapping("terminer/{id}")
-    public Reservation terminer(@PathVariable("id") long id) {
-        return reservationService.terminer(id);
-    }
-
-    @GetMapping("client/{idClient}")
-    public List<Reservation> getByClient(@PathVariable("idClient") long idClient) {
-        return reservationService.findByClient(idClient);
-    }
-
-    @GetMapping("vehicule/{idVehicule}")
-    public List<Reservation> getByVehicule(@PathVariable("idVehicule") long idVehicule) {
-        return reservationService.findByVehicule(idVehicule);
-    }
-
-    @GetMapping("statut/{statut}")
-    public List<Reservation> getByStatut(@PathVariable("statut") StatutReservation statut) {
-        return reservationService.findByStatut(statut);
     }
 }

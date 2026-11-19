@@ -1,5 +1,7 @@
 package tn.connexion3b2._emeabirmersani.Domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,25 +11,21 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@ToString
+@AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Paiement {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPaiement;
-
     private BigDecimal montant;
     private LocalDate datePaiement;
-
     @Enumerated(EnumType.STRING)
     private ModePaiement modePaiement;
 
-    // Étape 1 — Paiement * ---> 1 Contrat : côté PROPRIÉTAIRE (porte la FK contrat_id_contrat)
-    // LAZY forcé : le @ManyToOne est EAGER par défaut.
+    // Paiement * --- 1 Contrat (cote proprietaire : FK contrat_id_contrat)
+    // Ignore en JSON : le paiement est affiche dans son Contrat (composition)
     @ManyToOne(fetch = FetchType.LAZY)
-    @ToString.Exclude
+    @JsonIgnore
     private Contrat contrat;
 }

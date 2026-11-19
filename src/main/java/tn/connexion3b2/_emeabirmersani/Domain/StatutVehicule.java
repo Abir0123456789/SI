@@ -1,5 +1,8 @@
 package tn.connexion3b2._emeabirmersani.Domain;
 
 public enum StatutVehicule {
-    DISPONIBLE,LOUE,MAINTENANCE ;
+    DISPONIBLE,
+    LOUE,
+    MAINTENANCE,
+
 }

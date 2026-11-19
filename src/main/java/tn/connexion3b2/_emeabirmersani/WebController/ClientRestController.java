@@ -1,53 +1,48 @@
 package tn.connexion3b2._emeabirmersani.WebController;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import tn.connexion3b2._emeabirmersani.Domain.Client;
 import tn.connexion3b2._emeabirmersani.Service.IClientService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/clients")
+@RequestMapping("clients")
 @RequiredArgsConstructor
 public class ClientRestController {
 
     private final IClientService clientService;
 
-    @GetMapping("all")
-    public List<Client> getAll() {
+    @PostMapping("add")
+    public Client create(@RequestBody Client client) {
+        return clientService.create(client);
+    }
+
+    @GetMapping
+    public List<Client> findAll() {
         return clientService.findAll();
     }
 
-    @GetMapping("get/{id}")
-    public Client getById(@PathVariable("id") long id) {
-        return clientService.getById(id);
+    @GetMapping("{id}")
+    public Client findById(@PathVariable("id") Long id) {
+        return clientService.findById(id);
     }
 
-    @PostMapping("add")
-    public Client create(@RequestBody Client client) {
-        return clientService.add(client);
+    @PutMapping("{id}")
+    public Client update(@PathVariable("id") Long id, @RequestBody Client client) {
+        return clientService.update(id, client);
     }
 
-    @PutMapping("update")
-    public Client update(@RequestBody Client client) {
-        return clientService.update(client);
-    }
-
-    @DeleteMapping("delete/{id}")
-    public void delete(@PathVariable("id") long id) {
+    @DeleteMapping("{id}")
+    public void deleteById(@PathVariable("id") Long id) {
         clientService.deleteById(id);
-    }
-
-    // ---------- métier ----------
-
-    @GetMapping("email")
-    public Client getByEmail(@RequestParam("email") String email) {
-        return clientService.findByEmail(email);
-    }
-
-    @GetMapping("recherche")
-    public List<Client> rechercher(@RequestParam("motCle") String motCle) {
-        return clientService.rechercher(motCle);
     }
 }

@@ -11,33 +11,25 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@ToString
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // proxy LAZY : champs techniques Hibernate
+@AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Agence {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAgence;
-
     private String nom;
     private String ville;
     private String adresse;
     private String telephone;
 
-    // Agence 1 --- * Employe : côté INVERSE, LAZY, aucune cascade
+    // Agence 1 --- * Employe (cote inverse) : aucune cascade
     @OneToMany(mappedBy = "agence", fetch = FetchType.LAZY)
     @JsonIgnore
-    @ToString.Exclude
-    @Builder.Default
     private List<Employe> employes = new ArrayList<>();
 
-    // Agence 1 --- * Vehicule : côté INVERSE, LAZY, aucune cascade (un véhicule survit à son agence)
+    // Agence 1 --- * Vehicule (cote inverse) : aucune cascade, un vehicule survit a son agence
     @OneToMany(mappedBy = "agence", fetch = FetchType.LAZY)
     @JsonIgnore
-    @ToString.Exclude
-    @Builder.Default
     private List<Vehicule> vehicules = new ArrayList<>();
 }
