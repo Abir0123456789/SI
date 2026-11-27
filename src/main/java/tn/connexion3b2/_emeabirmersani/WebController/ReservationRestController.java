@@ -13,6 +13,7 @@ import tn.connexion3b2._emeabirmersani.Domain.Reservation;
 import tn.connexion3b2._emeabirmersani.Service.IReservationService;
 
 import java.util.List;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("reservations")
@@ -44,5 +45,10 @@ public class ReservationRestController {
     @DeleteMapping("{id}")
     public void deleteById(@PathVariable("id") Long id) {
         reservationService.deleteById(id);
+    }
+
+    @GetMapping("/date/{date}")
+    public List<Reservation> getByDate(@PathVariable LocalDate date) {
+        return reservationService.affichereservationpardate(date);
     }
 }

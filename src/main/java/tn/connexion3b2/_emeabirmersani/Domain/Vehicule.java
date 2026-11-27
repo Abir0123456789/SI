@@ -35,7 +35,8 @@ public class Vehicule {
     private Agence agence;
 
     // Vehicule * --- * Equipement (cote proprietaire : table de jointure vehicule_equipement)
-    @ManyToMany(fetch = FetchType.LAZY)
+    // PERSIST : les equipements envoyes sans id sont crees avec le vehicule ; pas de REMOVE (equipements partages)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "vehicule_equipement")
     private Set<Equipement> equipements = new HashSet<>();
 

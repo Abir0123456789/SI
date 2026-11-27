@@ -1,9 +1,9 @@
 package tn.connexion3b2._emeabirmersani.Service.Impls;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.connexion3b2._emeabirmersani.Domain.Agence;
+import tn.connexion3b2._emeabirmersani.Domain.CategorieVehicule;
 import tn.connexion3b2._emeabirmersani.Domain.Equipement;
 import tn.connexion3b2._emeabirmersani.Domain.Vehicule;
 import tn.connexion3b2._emeabirmersani.Repository.IAgenceRepository;
@@ -12,9 +12,8 @@ import tn.connexion3b2._emeabirmersani.Repository.IVehiculeRepository;
 import tn.connexion3b2._emeabirmersani.Service.IVehiculeService;
 import tn.connexion3b2._emeabirmersani.exception.ResourceNotFoundException;
 
+import java.math.BigDecimal;
 import java.util.List;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +35,7 @@ public class VehiculeServiceImpl implements IVehiculeService {
     @Override
     public Vehicule findById(Long id) {
         return vehiculeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Vehicule"));
+                .orElseThrow(() -> new ResourceNotFoundException("Vehicule", id));
     }
 
     @Override
@@ -67,10 +66,11 @@ public class VehiculeServiceImpl implements IVehiculeService {
     }
 
     @Override
-    public Vehicule assignToAgence(Long idvehicule, Long idAgence) {
-        Vehicule vehicule= findById (idvehicule);
-        Agence agence = agenceRepository.findById(idAgence).orElseThrow(() -> new EntityNotFoundException("agence not found"));
-        //affectation
+    public Vehicule assignToAgence(Long idVehicule, Long idAgence) {
+        Vehicule vehicule = findById(idVehicule);
+        Agence agence = agenceRepository.findById(idAgence)
+                .orElseThrow(() -> new ResourceNotFoundException("Agence", idAgence));
+        // Vehicule est le cote proprietaire (FK agence_id_agence) : c'est lui qu'on modifie puis qu'on sauvegarde
         vehicule.setAgence(agence);
         return vehiculeRepository.save(vehicule);
     }
@@ -81,6 +81,8 @@ public class VehiculeServiceImpl implements IVehiculeService {
             throw new IllegalArgumentException("Le tarif journalier ne peut pas être négatif");
         }
     }
+
+    @Override
     public Vehicule assignToEquipement(Long idVehicule, Long idEquipement) {
         Vehicule vehicule = findById(idVehicule);
         Equipement equipement = equipementRepository.findById(idEquipement)
@@ -90,19 +92,35 @@ public class VehiculeServiceImpl implements IVehiculeService {
     }
 
     @Override
-    public Vehicule UnassignToAgence(Long idvehicule, Long idAgence) {
-        Vehicule vehicule= findById (idvehicule);
-        Agence agence = agenceRepository.findById(idAgence).orElseThrow(() -> new EntityNotFoundException("agence not found"));
-        //affectation
+    public Vehicule unassignToAgence(Long idVehicule, Long idAgence) {
+        Vehicule vehicule = findById(idVehicule);
+        if (!agenceRepository.existsById(idAgence)) {
+            throw new ResourceNotFoundException("Agence", idAgence);
+        }
+        // Regle : on ne retire un vehicule que de l'agence a laquelle il est reellement affecte
+        if (vehicule.getAgence() == null || !idAgence.equals(vehicule.getAgence().getIdAgence())) {
+            throw new IllegalArgumentException("Le vehicule " + idVehicule + " n'est pas affecte a l'agence " + idAgence);
+        }
         vehicule.setAgence(null);
         return vehiculeRepository.save(vehicule);
     }
 
     @Override
     public Vehicule unassignToEquipement(Long idVehicule, Long idEquipement) {
-        Vehicule vehicule = vehiculeRepository.findById(idVehicule).orElseThrow(() -> new EntityNotFoundException("vehicule not found"));
-        Equipement equipement = equipementRepository.findById(idEquipement).orElseThrow(() -> new EntityNotFoundException("Équipement not found"));
+        Vehicule vehicule = findById(idVehicule);
+        Equipement equipement = equipementRepository.findById(idEquipement)
+                .orElseThrow(() -> new ResourceNotFoundException("Equipement", idEquipement));
         vehicule.getEquipements().remove(equipement);
         return vehiculeRepository.save(vehicule);
+    }
+
+    @Override
+    public List<Vehicule> getAllBycategorie(CategorieVehicule categorie) {
+        return vehiculeRepository.findBycategorie(categorie);
+    }
+
+    @Override
+    public List<Vehicule> getAllBycategorieAndtarif(CategorieVehicule categorie, BigDecimal min, BigDecimal max) {
+        return vehiculeRepository.findAllBycategorieAndTarifJournalierBetween(categorie, min, max);
     }
 }

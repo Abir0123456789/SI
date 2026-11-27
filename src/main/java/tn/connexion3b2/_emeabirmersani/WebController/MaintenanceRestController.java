@@ -32,7 +32,7 @@ public class MaintenanceRestController {
     }
 
     @GetMapping("{id}")
-    public Maintenance findById(@PathVariable("id") Long id) {
+    public MaintenanceDTO findById(@PathVariable("id") Long id) {
         return maintenanceService.findById(id);
     }
 

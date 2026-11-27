@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tn.connexion3b2._emeabirmersani.Domain.CategorieVehicule;
 import tn.connexion3b2._emeabirmersani.Domain.Vehicule;
 import tn.connexion3b2._emeabirmersani.Service.IVehiculeService;
-import tn.connexion3b2._emeabirmersani.Service.Impls.VehiculeServiceImpl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -47,23 +48,36 @@ public class VehiculeRestController {
         vehiculeService.deleteById(id);
     }
 
-
-    @PutMapping("/{idVehicule}/{idAgence}")
-    Vehicule assignToAgence(@PathVariable Long idVehicule,@PathVariable Long idAgence) {
-    return vehiculeService.assignToAgence(idVehicule,idAgence);
+    // Affecter : PUT /api/vehicules/{idVehicule}/agences/{idAgence}
+    @PutMapping("{idVehicule}/agences/{idAgence}")
+    public Vehicule assignToAgence(@PathVariable("idVehicule") Long idVehicule, @PathVariable("idAgence") Long idAgence) {
+        return vehiculeService.assignToAgence(idVehicule, idAgence);
     }
+
     @PutMapping("/{idVehicule}/equipements/{idEquipement}")
     public Vehicule assignToEquipement(@PathVariable Long idVehicule, @PathVariable Long idEquipement) {
         return vehiculeService.assignToEquipement(idVehicule, idEquipement);
     }
-    @PutMapping("unassignToAgence/{idVehicule}/{idAgence}")
-    Vehicule unassignToAgence(@PathVariable Long idVehicule,@PathVariable Long idAgence){
-        return vehiculeService.UnassignToAgence(idVehicule,idAgence);
 
+    // Desaffecter : PUT /api/vehicules/unassignToAgence/{idVehicule}/{idAgence}
+    @PutMapping("unassignToAgence/{idVehicule}/{idAgence}")
+    public Vehicule unassignToAgence(@PathVariable("idVehicule") Long idVehicule, @PathVariable("idAgence") Long idAgence) {
+        return vehiculeService.unassignToAgence(idVehicule, idAgence);
     }
 
     @PutMapping("unassignToEquipement/{idVehicule}/{idEquipement}")
-    Vehicule unassignToEquipement(@PathVariable Long idVehicule, @PathVariable Long idEquipement) {
+    public Vehicule unassignToEquipement(@PathVariable Long idVehicule, @PathVariable Long idEquipement) {
         return vehiculeService.unassignToEquipement(idVehicule, idEquipement);
+    }
+
+    @GetMapping("listbycategorie/{categorie}")
+    public List<Vehicule> afficherVehicules(@PathVariable CategorieVehicule categorie) {
+        return vehiculeService.getAllBycategorie(categorie);
+    }
+
+    // Corrige par rapport au projet type : le chemin declarait {tarifJournalier} alors que la methode attend min et max
+    @GetMapping("listbycategorieAndtarif/{categorie}/{min}/{max}")
+    public List<Vehicule> afficherVehiculesPartarif(@PathVariable CategorieVehicule categorie, @PathVariable BigDecimal min, @PathVariable BigDecimal max) {
+        return vehiculeService.getAllBycategorieAndtarif(categorie, min, max);
     }
 }

@@ -8,6 +8,7 @@ import tn.connexion3b2._emeabirmersani.Service.IReservationService;
 import tn.connexion3b2._emeabirmersani.exception.ResourceNotFoundException;
 
 import java.util.List;
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +45,10 @@ public class ReservationServiceImpl implements IReservationService {
         existant.setDateFin(reservation.getDateFin());
         existant.setStatut(reservation.getStatut());
         return reservationRepository.save(existant);
+    }
+    @Override
+    public List<Reservation> affichereservationpardate(LocalDate date) {
+        return reservationRepository.findReservationsByDate(date);
     }
 
     @Override
